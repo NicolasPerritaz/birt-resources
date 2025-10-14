@@ -1,4 +1,10 @@
-# BIRT Generation phases, tasks and events
+---
+title: BIRT Generation phases, tasks and events
+menu_order: 1
+taxonomy:
+    doc_category: BIRT
+---
+
 
 ## Overview
 

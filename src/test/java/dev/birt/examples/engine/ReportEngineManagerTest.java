@@ -3,7 +3,6 @@ package dev.birt.examples.engine;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -22,19 +21,28 @@ class ReportEngineManagerTest {
     }
 
     @Test
-    void runReport() {
-         ReportEngineManager engine = new ReportEngineManager();
-         engine.start();
-         String designPath = "reporting/report/events.rptdesign";
-         try (InputStream reportDesign = new FileInputStream(designPath)) {
-             engine.runReport(reportDesign,
-                     new RunConfiguration(true),
-                     new RenderConfiguration(OutputFormat.PDF, Path.of("output.pdf")));
-             engine.shutdown();
+    void runReportWithSeparateRenderTask() {
+        runReport(true);
+    }
 
-         } catch (IOException e) {
-             throw new RuntimeException(e);
-         }
+    @Test
+    void runAndRenderReport() {
+        runReport(false);
+    }
+
+    private void runReport(boolean isSeparateRenderTask) {
+        ReportEngineManager engine = new ReportEngineManager();
+        engine.start();
+        String designPath = "reporting/report/events.rptdesign";
+        try (InputStream reportDesign = new FileInputStream(designPath)) {
+            engine.runReport(reportDesign,
+                    new RunConfiguration(isSeparateRenderTask),
+                    new RenderConfiguration(OutputFormat.PDF, Path.of("output.pdf")));
+            engine.shutdown();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
